@@ -50,7 +50,7 @@ int AMAShift = 0; // horizontal shift of the indicator in bar
 int PhaseJMASmooth  = 0; // parameter of smoothing
 int MinBarForJma = 33;
 long MiTickNoBetweenTrade=100;
-int BufferCountToCopy=3;
+int BufferCountToCopy=2;
 int ExtTimeOut=0; // time out in seconds between trade operations
 enum Tick_type //Type of Tick
  {
@@ -99,7 +99,28 @@ protected:
    double            m_bideriv_ama[];                 // bi-derivative of Ama
    double            m_bideriv_jma[];                 // bi-derivative of Jma
    double            m_tick_volume_ma[];           
-   double            m_tick_volume_dev[];       
+   double            m_tick_volume_dev[];   
+   
+   double            m_price_prev;
+   double            m_ama_prev;           
+   double            m_jma_prev;         
+   double            m_sslope_ama_prev;                
+   double            m_sslope_jma_prev;                 
+   double            m_bideriv_ama_prev;               
+   double            m_bideriv_jma_prev;             
+   double            m_tick_volume_ma_prev;           
+   double            m_tick_volume_dev_prev; 
+     
+   double            m_price_curr;
+   double            m_ama_curr;           
+   double            m_jma_curr;         
+   double            m_sslope_ama_curr;                
+   double            m_sslope_jma_curr;                 
+   double            m_bideriv_ama_curr;               
+   double            m_bideriv_jma_curr;             
+   double            m_tick_volume_ma_curr;           
+   double            m_tick_volume_dev_curr;   
+       
    MqlRates          m_rates[];
    //--- indicator values at the moment the position opened
    double            m_open_price;           
@@ -122,6 +143,7 @@ protected:
    //--- other variables
    Tick_type         m_tick_types[CONTINUOUS_TICK_NUM];
    int               m_tick_type_index;
+   bool              m_is_first_tick;
 
 public:
                      CAmaJmaExpert(void);
@@ -151,6 +173,7 @@ protected:
    bool              FromOsciToTrendBearCont(void);
    bool              FromTrendBullToOsciCont(void);
    bool              FromTrendBearToOsciCont(void);
+   
    void              RecordTickType(void);
    bool              IsBullArrange(void);
    bool              IsBearArrange(void);
@@ -162,6 +185,8 @@ protected:
    void              RecordValuesOfClosedPosition(void);
    bool              IsTooFrequent(void);
    bool              IsReachedTickVolumeToOpen(void);
+   void              CopyIndicatorValuesToCurr(void);
+   void              CopyCurrValuesToPrev(void);
 
   };
 //--- global expert
@@ -174,7 +199,8 @@ CAmaJmaExpert::CAmaJmaExpert(void) : m_handle(INVALID_HANDLE),
                                      m_handle_jma(INVALID_HANDLE),
                                      m_open_bar_no(0),
                                      m_close_bar_no(0),
-                                     m_tick_type_index(-1)
+                                     m_tick_type_index(-1),
+                                     m_is_first_tick(true)
   {
    ArraySetAsSeries(m_price,true);
    ArraySetAsSeries(m_ama,true);
@@ -318,37 +344,37 @@ double CAmaJmaExpert::TradeSizeOptimized(void)
 
 bool CAmaJmaExpert::InOscillation(void)
   {
-   return MathAbs(m_sslope_ama[1])<AmaSlopeThreshold && MathAbs(m_sslope_ama[0])<AmaSlopeThreshold;
+   return MathAbs(m_sslope_ama_prev)<AmaSlopeThreshold && MathAbs(m_sslope_ama_curr)<AmaSlopeThreshold;
   }
 
 bool CAmaJmaExpert::InTrendBull(void)
   {
-   return m_sslope_ama[1]>AmaSlopeThreshold && m_sslope_ama[0]>AmaSlopeThreshold;
+   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
   }
 
 bool CAmaJmaExpert::InTrendBear(void)
   {
-   return m_sslope_ama[1]+AmaSlopeThreshold<0 && m_sslope_ama[0]+AmaSlopeThreshold<0;
+   return m_sslope_ama_prev+AmaSlopeThreshold<0 && m_sslope_ama_curr+AmaSlopeThreshold<0;
   }
 
 bool CAmaJmaExpert::FromOsciToTrendBull(void)
   {
-   return m_sslope_ama[1]<AmaSlopeThreshold && m_sslope_ama[0]>AmaSlopeThreshold;
+   return m_sslope_ama_prev<AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
   }
 
 bool CAmaJmaExpert::FromOsciToTrendBear(void)
   {
-   return m_sslope_ama[1]+AmaSlopeThreshold>0 && m_sslope_ama[0]+AmaSlopeThreshold<0;
+   return m_sslope_ama_prev+AmaSlopeThreshold>0 && m_sslope_ama_curr+AmaSlopeThreshold<0;
   }
 
 bool CAmaJmaExpert::FromTrendBullToOsci(void)
   {
-   return m_sslope_ama[1]>AmaSlopeThreshold && m_sslope_ama[0]<AmaSlopeThreshold;
+   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr<AmaSlopeThreshold;
   }
 
 bool CAmaJmaExpert::FromTrendBearToOsci(void)
   {
-   return m_sslope_ama[1]+AmaSlopeThreshold<0 && m_sslope_ama[0]+AmaSlopeThreshold>0;
+   return m_sslope_ama_prev+AmaSlopeThreshold<0 && m_sslope_ama_curr+AmaSlopeThreshold>0;
   }
 
 bool CAmaJmaExpert::InOscillationCont(void)
@@ -433,12 +459,12 @@ void CAmaJmaExpert::RecordTickType(void)
 
 bool CAmaJmaExpert::IsBearArrange(void)
   {
-   return(m_price[0]<m_jma[0] && m_jma[0]<m_ama[0]);
+   return(m_price_curr<m_jma_curr && m_jma_curr<m_ama_curr);
   }
 
 bool CAmaJmaExpert::IsBullArrange(void)
   {
-   return(m_price[0]>m_jma[0] && m_jma[0]>m_ama[0]);
+   return(m_price_curr>m_jma_curr && m_jma_curr>m_ama_curr);
   }
 
 bool CAmaJmaExpert::ShouldCloseLong(void)
@@ -446,24 +472,26 @@ bool CAmaJmaExpert::ShouldCloseLong(void)
 //   if(m_rates[0].tick_volume-m_open_tick_no<MiTickNoBetweenTrade) return false;
    if(m_open_trade_type==BEAR_TO_OSCI_TD)
    {
-     if(m_sslope_jma[0]<m_sslope_ama[0] && m_sslope_jma[1]>m_sslope_jma[0]) { CurrTradeType=BEAR_TO_OSCI_TD; return true; }
+     if(m_sslope_jma_curr<m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr) { CurrTradeType=BEAR_TO_OSCI_TD; return true; }
      else return false;
    }
    else if(m_open_trade_type==OSCI_TO_BULL_TD)
    {
-     if(m_sslope_jma[0]<m_sslope_ama[0]) { CurrTradeType=OSCI_TO_BULL_TD; return true; }
+     if(m_sslope_jma_curr<m_sslope_ama_curr) { CurrTradeType=OSCI_TO_BULL_TD; return true; }
      else return false;
    }
    else if(m_open_trade_type==OSCILLATION_TD)
    {
-     if(m_sslope_ama[0]>0 && m_sslope_jma[0]>0 && m_bideriv_jma[1]>m_bideriv_jma[0] && (m_bideriv_jma[0]<=0 || m_bideriv_jma[0]<AmaSlopeThreshold*0.05))
+     if(m_sslope_ama_curr>0 && m_sslope_jma_curr>0 && 
+        m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_jma_curr<=0 && m_bideriv_ama_prev>m_bideriv_ama_curr && m_bideriv_ama_curr<=0 &&
+        m_sslope_jma_prev>m_sslope_jma_curr && m_sslope_ama_prev>m_sslope_ama_curr)
        { CurrTradeType=OSCILLATION_TD; return true; }
      else
        return false;
    }
    else if(m_open_trade_type==TREND_BEAR_TD)
    {
-     if((m_bideriv_ama[0]<0 && m_bideriv_jma[0]<0) || m_sslope_ama[1]>m_sslope_ama[0] || m_sslope_jma[1]>m_sslope_jma[0])
+     if((m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0) || m_sslope_ama_prev>m_sslope_ama_curr || m_sslope_jma_prev>m_sslope_jma_curr)
        { CurrTradeType=TREND_BEAR_TD; return true; }
      else
        return false;
@@ -472,25 +500,25 @@ bool CAmaJmaExpert::ShouldCloseLong(void)
    /*
    if(FromTrendBullToOsciCont())
    {
-     if(m_sslope_jma[0]<m_sslope_ama[0]) return true;
+     if(m_sslope_jma_curr<m_sslope_ama_curr) return true;
      else return false;
    }
    else if(FromOsciToTrendBearCont())
    {
-     if(m_sslope_jma[0]<m_sslope_ama[0]) return true;
+     if(m_sslope_jma_curr<m_sslope_ama_curr) return true;
      else return false;
    }
    if(InOscillationCont())
    {
-     if(m_sslope_jma[0]<m_open_sslope_jma) return true;
-     if(IsBullArrange() && m_sslope_jma[0]>0 && m_bideriv_jma[1]>m_bideriv_jma[0] && (m_bideriv_jma[0]<=0 || MathAbs(m_bideriv_jma[0])<AmaSlopeThreshold*0.05))
+     if(m_sslope_jma_curr<m_open_sslope_jma) return true;
+     if(IsBullArrange() && m_sslope_jma_curr>0 && m_bideriv_jma_prev>m_bideriv_jma_curr && (m_bideriv_jma_curr<=0 || MathAbs(m_bideriv_jma_curr)<AmaSlopeThreshold*0.05))
        return true;
      else
        return false;
    } 
    else
    {
-     if(IsBullArrange() && m_sslope_jma[0]>0 && m_sslope_ama[0]>0 && m_bideriv_ama[0]<=0 && m_bideriv_jma[0]<=0 && m_sslope_ama[0]<AmaSlopeThreshold)
+     if(IsBullArrange() && m_sslope_jma_curr>0 && m_sslope_ama_curr>0 && m_bideriv_ama_curr<=0 && m_bideriv_jma_curr<=0 && m_sslope_ama_curr<AmaSlopeThreshold)
        return true;
      else
        return false;
@@ -503,24 +531,24 @@ bool CAmaJmaExpert::ShouldCloseShort(void)
 //   if(m_rates[0].tick_volume-m_open_tick_no<MiTickNoBetweenTrade) return false;
    if(m_open_trade_type==BULL_TO_OSCI_TD)
    {
-     if(m_sslope_jma[0]>m_sslope_ama[0] && m_sslope_jma[1]<m_sslope_jma[0]) { CurrTradeType=BULL_TO_OSCI_TD; return true; }
+     if(m_sslope_jma_curr>m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr) { CurrTradeType=BULL_TO_OSCI_TD; return true; }
      else return false;
    }
    else if(m_open_trade_type==OSCI_TO_BEAR_TD)
    {
-     if(m_sslope_jma[0]>m_sslope_ama[0]) { CurrTradeType=OSCI_TO_BEAR_TD; return true; }
+     if(m_sslope_jma_curr>m_sslope_ama_curr) { CurrTradeType=OSCI_TO_BEAR_TD; return true; }
      else return false;
    }
    else if(m_open_trade_type==OSCILLATION_TD)
    {
-     if(m_sslope_ama[0]<0 && m_sslope_jma[0]<0 && m_bideriv_jma[1]<m_bideriv_jma[0] && (m_bideriv_jma[0]>=0 || m_bideriv_jma[0]+AmaSlopeThreshold*0.05>0))
+     if(m_sslope_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || m_bideriv_jma_curr+AmaSlopeThreshold*0.05>0))
        { CurrTradeType=OSCILLATION_TD; return true; }
      else
        return false;
    } 
    else if(m_open_trade_type==TREND_BULL_TD)
    {
-     if(m_bideriv_ama[0]>0 && m_bideriv_jma[0]>0 || m_sslope_ama[1]<m_sslope_ama[0] || m_sslope_jma[1]<m_sslope_jma[0])
+     if(m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0 || m_sslope_ama_prev<m_sslope_ama_curr || m_sslope_jma_prev<m_sslope_jma_curr)
        { CurrTradeType=TREND_BULL_TD; return true; }
      else
        return false;
@@ -529,25 +557,25 @@ bool CAmaJmaExpert::ShouldCloseShort(void)
    /*
    if(FromTrendBearToOsciCont())
    {
-     if(m_sslope_jma[0]>m_sslope_ama[0]) return true;
+     if(m_sslope_jma_curr>m_sslope_ama_curr) return true;
      else return false;
    }
    else if(FromOsciToTrendBullCont())
    {
-     if(m_sslope_jma[0]>m_sslope_ama[0]) return true;
+     if(m_sslope_jma_curr>m_sslope_ama_curr) return true;
      else return false;
    }
    else if(InOscillationCont())
    {
-     if(m_sslope_jma[0]>m_open_sslope_jma) return true;
-     if(IsBearArrange() && m_ama[0]<0 && m_sslope_jma[0]<0 && m_bideriv_jma[1]<m_bideriv_jma[0] && (m_bideriv_jma[0]>=0 || MathAbs(m_bideriv_jma[0])<AmaSlopeThreshold*0.05))
+     if(m_sslope_jma_curr>m_open_sslope_jma) return true;
+     if(IsBearArrange() && m_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || MathAbs(m_bideriv_jma_curr)<AmaSlopeThreshold*0.05))
        return true;
      else
        return false;
    } 
    else
    {
-     if(IsBearArrange() && m_ama[0]>0 && m_sslope_jma[0]<0 && m_sslope_ama[0]<0 && m_bideriv_ama[0]>0 && m_bideriv_jma[0]>0 && m_sslope_ama[0]+AmaSlopeThreshold>0)
+     if(IsBearArrange() && m_ama_curr>0 && m_sslope_jma_curr<0 && m_sslope_ama_curr<0 && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0 && m_sslope_ama_curr+AmaSlopeThreshold>0)
        return true;
      else
        return false;
@@ -560,24 +588,24 @@ bool CAmaJmaExpert::ShouldOpenShort(void)
 //   if(Bars(Symbol(),Period())<=m_close_bar_no || !IsReachedTickVolumeToOpen()) return false;
    if(FromTrendBullToOsciCont())
    {
-     if(IsBullArrange() && m_sslope_jma[0]<m_sslope_ama[0] && m_sslope_jma[1]>m_sslope_jma[0]) { CurrTradeType=BULL_TO_OSCI_TD; return true; }
+     if(IsBullArrange() && m_sslope_jma_curr<m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr) { CurrTradeType=BULL_TO_OSCI_TD; return true; }
      else return false;
    }
    else if(FromOsciToTrendBearCont())
    {
-     if(m_sslope_jma[0]<m_sslope_ama[0]) { CurrTradeType=OSCI_TO_BEAR_TD; return true; }
+     if(m_sslope_jma_curr<m_sslope_ama_curr) { CurrTradeType=OSCI_TO_BEAR_TD; return true; }
      else return false;
    }
    else if(InOscillationCont())
    {
-     if(IsBullArrange() && m_sslope_ama[0]>0 && m_sslope_jma[0]>0 && m_bideriv_jma[1]>m_bideriv_jma[0] && (m_bideriv_jma[0]<=0 || m_bideriv_jma[0]<AmaSlopeThreshold*0.05))
+     if(IsBullArrange() && m_sslope_ama_curr>0 && m_sslope_jma_curr>0 && m_bideriv_jma_prev>m_bideriv_jma_curr && (m_bideriv_jma_curr<=0 || m_bideriv_jma_curr<AmaSlopeThreshold*0.05))
        { CurrTradeType=OSCILLATION_TD; return true; }
      else
        return false;
    } 
    else if(InTrendBullCont())
    {
-     if(IsBullArrange() && m_bideriv_ama[0]<0 && m_bideriv_jma[0]<0 && m_sslope_ama[1]>m_sslope_ama[0] && m_sslope_jma[1]>m_sslope_jma[0])
+     if(IsBullArrange() && m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr)
        { CurrTradeType=TREND_BULL_TD; return true; }
      else
        return false;
@@ -590,24 +618,24 @@ bool CAmaJmaExpert::ShouldOpenLong(void)
 //   if(Bars(Symbol(),Period())<=m_close_bar_no || !IsReachedTickVolumeToOpen()) return false;
    if(FromTrendBearToOsciCont())
    {
-     if(IsBearArrange() && m_sslope_jma[0]>m_sslope_ama[0] && m_sslope_jma[1]<m_sslope_jma[0]) { CurrTradeType=BEAR_TO_OSCI_TD; return true; }
+     if(IsBearArrange() && m_sslope_jma_curr>m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr) { CurrTradeType=BEAR_TO_OSCI_TD; return true; }
      else return false;
    }
    else if(FromOsciToTrendBullCont())
    {
-     if(m_sslope_jma[0]>m_sslope_ama[0]) { CurrTradeType=OSCI_TO_BULL_TD; return true; }
+     if(m_sslope_jma_curr>m_sslope_ama_curr) { CurrTradeType=OSCI_TO_BULL_TD; return true; }
      else return false;
    }
    else if(InOscillationCont())
    {
-     if(IsBearArrange() && m_sslope_ama[0]<0 && m_sslope_jma[0]<0 && m_bideriv_jma[1]<m_bideriv_jma[0] && (m_bideriv_jma[0]>=0 || m_bideriv_jma[0]+AmaSlopeThreshold*0.05>0))
+     if(IsBearArrange() && m_sslope_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || m_bideriv_jma_curr+AmaSlopeThreshold*0.05>0))
        { CurrTradeType=OSCILLATION_TD; return true; }
      else
        return false;
    } 
    else if(InTrendBearCont())
    {
-     if(IsBearArrange() && m_bideriv_ama[0]>0 && m_bideriv_jma[0]>0 && m_sslope_ama[1]<m_sslope_ama[0] && m_sslope_jma[1]<m_sslope_jma[0])
+     if(IsBearArrange() && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0 && m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr)
        { CurrTradeType=TREND_BEAR_TD; return true; }
      else
        return false;
@@ -633,7 +661,7 @@ bool CAmaJmaExpert::PositionClosed(void)
    if(m_trade.PositionClose(Symbol()))
    {
       RecordValuesOfClosedPosition();
-      printf("Long position by %s to be closed",Symbol());
+      printf("Long position by %s to be closed with %s",Symbol(),EnumToString(m_close_trade_type));
       res=true;
    }
    else
@@ -664,7 +692,7 @@ bool CAmaJmaExpert::LongOpened(void)
       if(m_trade.PositionOpen(Symbol(),ORDER_TYPE_BUY,lot,price,0,0))
         {
          RecordValuesOfOpenedPosition();
-         printf("Position by %s to be opened",Symbol());
+         printf("Position by %s to be opened with %s",Symbol(),EnumToString(m_open_trade_type));
          res=true;
         }
       else
@@ -695,7 +723,7 @@ bool CAmaJmaExpert::ShortOpened(void)
       if(m_trade.PositionOpen(Symbol(),ORDER_TYPE_SELL,lot,price,0,0))
         {
          RecordValuesOfOpenedPosition();
-         printf("Position by %s to be opened",Symbol());
+         printf("Position by %s to be opened with %s",Symbol(),EnumToString(m_open_trade_type));
          res=true;
         }
       else
@@ -710,11 +738,11 @@ bool CAmaJmaExpert::ShortOpened(void)
 
 void CAmaJmaExpert::RecordValuesOfOpenedPosition(void)
   {
-   m_open_price=m_price[0];
-   m_open_ama=m_ama[0];
-   m_open_jma=m_jma[0];
-   m_open_sslope_ama=m_sslope_ama[0];
-   m_open_sslope_jma=m_sslope_jma[0];
+   m_open_price=m_price_curr;
+   m_open_ama=m_ama_curr;
+   m_open_jma=m_jma_curr;
+   m_open_sslope_ama=m_sslope_ama_curr;
+   m_open_sslope_jma=m_sslope_jma_curr;
    m_open_bar_no=Bars(Symbol(),Period());
    m_open_tick_no=m_rates[0].tick_volume;
    m_open_trade_type=CurrTradeType;
@@ -722,16 +750,42 @@ void CAmaJmaExpert::RecordValuesOfOpenedPosition(void)
 
 void CAmaJmaExpert::RecordValuesOfClosedPosition(void)
   {
-   m_close_price=m_price[0];
-   m_close_ama=m_ama[0];
-   m_close_jma=m_jma[0];
-   m_close_sslope_ama=m_sslope_ama[0];
-   m_close_sslope_jma=m_sslope_jma[0];
+   m_close_price=m_price_curr;
+   m_close_ama=m_ama_curr;
+   m_close_jma=m_jma_curr;
+   m_close_sslope_ama=m_sslope_ama_curr;
+   m_close_sslope_jma=m_sslope_jma_curr;
    m_close_bar_no=Bars(Symbol(),Period());
    m_close_tick_no=m_rates[0].tick_volume;
-   //m_close_trade_type=CurrTradeType;
+   m_close_trade_type=CurrTradeType;
   }
 
+void CAmaJmaExpert::CopyIndicatorValuesToCurr(void)
+  {
+   m_price_curr=m_price[0];
+   m_ama_curr=m_ama[0];
+   m_jma_curr=m_jma[0];
+   m_sslope_ama_curr=m_sslope_ama[0];
+   m_sslope_jma_curr=m_sslope_jma[0];
+   m_bideriv_ama_curr=m_bideriv_ama[0];
+   m_bideriv_jma_curr=m_bideriv_jma[0];
+   m_tick_volume_ma_curr=m_tick_volume_ma[0];
+   m_tick_volume_dev_curr=m_tick_volume_dev[0];
+  }
+ 
+void CAmaJmaExpert::CopyCurrValuesToPrev(void)
+  {
+   m_price_prev=m_price_curr;
+   m_ama_prev=m_ama_curr;
+   m_jma_prev=m_jma_curr;
+   m_sslope_ama_prev=m_sslope_ama_curr;
+   m_sslope_jma_prev=m_sslope_jma_curr;
+   m_bideriv_ama_prev=m_bideriv_ama_curr;
+   m_bideriv_jma_prev=m_bideriv_jma_curr;
+   m_tick_volume_ma_prev=m_tick_volume_ma_curr;
+   m_tick_volume_dev_prev=m_tick_volume_dev_curr;
+  }
+ 
 bool CAmaJmaExpert::IsTooFrequent(void)
   {
    return Bars(Symbol(),Period())<=m_open_bar_no;
@@ -755,6 +809,13 @@ bool CAmaJmaExpert::Processing(void)
       Print("CopyBuffer of indicator ",INDICATOR_NAME," failed");
       return(false);
      }
+   if(!m_is_first_tick) CopyCurrValuesToPrev();
+   CopyIndicatorValuesToCurr();
+   if(m_is_first_tick)
+   {
+     m_is_first_tick=false;
+     return false;
+   }
    if(CopyRates(Symbol(),Period(),0,2,m_rates)!=2)
      {
       Print("CopyRates of ",Symbol()," failed, no history");
