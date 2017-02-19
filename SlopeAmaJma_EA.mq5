@@ -51,28 +51,86 @@ int PhaseJMASmooth  = 0; // parameter of smoothing
 int MinBarForJma = 33;
 long MiTickNoBetweenTrade=100;
 int BufferCountToCopy=2;
+double GoldenSectionRatio=0.618;
+double NearZeroRatio=0.05;
 int ExtTimeOut=0; // time out in seconds between trade operations
 enum Tick_type //Type of Tick
  {
   EMPTY = 0,
   OSCILLATION = 1,  
+  OSCILLATION_OPEN_LONG,
+  OSCILLATION_OPEN_SHORT,
+  OSCILLATION_CLOSE_LONG,
+  OSCILLATION_CLOSE_SHORT,
   TREND_BULL,
+  TREND_BULL_OPEN_LONG,
+  TREND_BULL_OPEN_SHORT,
+  TREND_BULL_CLOSE_LONG,
+  TREND_BULL_CLOSE_SHORT,
   TREND_BEAR,   
+  TREND_BEAR_OPEN_LONG,   
+  TREND_BEAR_OPEN_SHORT,   
+  TREND_BEAR_CLOSE_LONG,   
+  TREND_BEAR_CLOSE_SHORT,   
   OSCI_TO_BULL,        
+  OSCI_TO_BULL_OPEN_LONG,        
+  OSCI_TO_BULL_OPEN_SHORT,        
+  OSCI_TO_BULL_CLOSE_LONG,        
+  OSCI_TO_BULL_CLOSE_SHORT,        
   OSCI_TO_BEAR,        
+  OSCI_TO_BEAR_OPEN_LONG,        
+  OSCI_TO_BEAR_OPEN_SHORT,        
+  OSCI_TO_BEAR_CLOSE_LONG,        
+  OSCI_TO_BEAR_CLOSE_SHORT,        
   BULL_TO_OSCI,     
-  BEAR_TO_OSCI
+  BULL_TO_OSCI_OPEN_LONG,     
+  BULL_TO_OSCI_OPEN_SHORT,     
+  BULL_TO_OSCI_CLOSE_LONG,     
+  BULL_TO_OSCI_CLOSE_SHORT,     
+  BEAR_TO_OSCI,
+  BEAR_TO_OSCI_OPEN_LONG,
+  BEAR_TO_OSCI_OPEN_SHORT,
+  BEAR_TO_OSCI_CLOSE_LONG,
+  BEAR_TO_OSCI_CLOSE_SHORT
  };
 enum Trade_type //Type of trade
  {
   EMPTY_TD = 0,
   OSCILLATION_TD = 1,  
+  OSCILLATION_OPEN_LONG_TD,
+  OSCILLATION_OPEN_SHORT_TD,
+  OSCILLATION_CLOSE_LONG_TD,
+  OSCILLATION_CLOSE_SHORT_TD,
   TREND_BULL_TD,
+  TREND_BULL_OPEN_LONG_TD,
+  TREND_BULL_OPEN_SHORT_TD,
+  TREND_BULL_CLOSE_LONG_TD,
+  TREND_BULL_CLOSE_SHORT_TD,
   TREND_BEAR_TD,   
+  TREND_BEAR_OPEN_LONG_TD,   
+  TREND_BEAR_OPEN_SHORT_TD,   
+  TREND_BEAR_CLOSE_LONG_TD,   
+  TREND_BEAR_CLOSE_SHORT_TD,   
   OSCI_TO_BULL_TD,        
+  OSCI_TO_BULL_OPEN_LONG_TD,        
+  OSCI_TO_BULL_OPEN_SHORT_TD,        
+  OSCI_TO_BULL_CLOSE_LONG_TD,        
+  OSCI_TO_BULL_CLOSE_SHORT_TD,        
   OSCI_TO_BEAR_TD,        
+  OSCI_TO_BEAR_OPEN_LONG_TD,        
+  OSCI_TO_BEAR_OPEN_SHORT_TD,        
+  OSCI_TO_BEAR_CLOSE_LONG_TD,        
+  OSCI_TO_BEAR_CLOSE_SHORT_TD,        
   BULL_TO_OSCI_TD,     
-  BEAR_TO_OSCI_TD
+  BULL_TO_OSCI_OPEN_LONG_TD,     
+  BULL_TO_OSCI_OPEN_SHORT_TD,     
+  BULL_TO_OSCI_CLOSE_LONG_TD,     
+  BULL_TO_OSCI_CLOSE_SHORT_TD,     
+  BEAR_TO_OSCI_TD,
+  BEAR_TO_OSCI_OPEN_LONG_TD,
+  BEAR_TO_OSCI_OPEN_SHORT_TD,
+  BEAR_TO_OSCI_CLOSE_LONG_TD,
+  BEAR_TO_OSCI_CLOSE_SHORT_TD
  };
 Trade_type CurrTradeType=EMPTY_TD;
 
@@ -158,21 +216,78 @@ protected:
    bool              LongOpened(void);
    bool              ShortOpened(void);
    double            TradeSizeOptimized(void);
+   
    bool              InOscillation(void);
+   bool              InOscillationOpenLong(void);
+   bool              InOscillationOpenShort(void);
+   bool              InOscillationCloseLong(void);
+   bool              InOscillationCloseShort(void);
    bool              InTrendBull(void);
+   bool              InTrendBullOpenLong(void);
+   bool              InTrendBullOpenShort(void);
+   bool              InTrendBullCloseLong(void);
+   bool              InTrendBullCloseShort(void);
    bool              InTrendBear(void);
+   bool              InTrendBearOpenLong(void);
+   bool              InTrendBearOpenShort(void);
+   bool              InTrendBearCloseLong(void);
+   bool              InTrendBearCloseShort(void);
    bool              FromOsciToTrendBull(void);
+   bool              FromOsciToTrendBullOpenLong(void);
+   bool              FromOsciToTrendBullOpenShort(void);
+   bool              FromOsciToTrendBullCloseLong(void);
+   bool              FromOsciToTrendBullCloseShort(void);
    bool              FromOsciToTrendBear(void);
+   bool              FromOsciToTrendBearOpenLong(void);
+   bool              FromOsciToTrendBearOpenShort(void);
+   bool              FromOsciToTrendBearCloseLong(void);
+   bool              FromOsciToTrendBearCloseShort(void);
    bool              FromTrendBullToOsci(void);
+   bool              FromTrendBullToOsciOpenLong(void);
+   bool              FromTrendBullToOsciOpenShort(void);
+   bool              FromTrendBullToOsciCloseLong(void);
+   bool              FromTrendBullToOsciCloseShort(void);
    bool              FromTrendBearToOsci(void);
+   bool              FromTrendBearToOsciOpenLong(void);
+   bool              FromTrendBearToOsciOpenShort(void);
+   bool              FromTrendBearToOsciCloseLong(void);
+   bool              FromTrendBearToOsciCloseShort(void);
    //--- the following seven methods are the above methods in continuously
    bool              InOscillationCont(void);
+   bool              InOscillationOpenLongCont(void);
+   bool              InOscillationOpenShortCont(void);
+   bool              InOscillationCloseLongCont(void);
+   bool              InOscillationCloseShortCont(void);
    bool              InTrendBullCont(void);
+   bool              InTrendBullOpenLongCont(void);
+   bool              InTrendBullOpenShortCont(void);
+   bool              InTrendBullCloseLongCont(void);
+   bool              InTrendBullCloseShortCont(void);
    bool              InTrendBearCont(void);
+   bool              InTrendBearOpenLongCont(void);
+   bool              InTrendBearOpenShortCont(void);
+   bool              InTrendBearCloseLongCont(void);
+   bool              InTrendBearCloseShortCont(void);
    bool              FromOsciToTrendBullCont(void);
+   bool              FromOsciToTrendBullOpenLongCont(void);
+   bool              FromOsciToTrendBullOpenShortCont(void);
+   bool              FromOsciToTrendBullCloseLongCont(void);
+   bool              FromOsciToTrendBullCloseShortCont(void);
    bool              FromOsciToTrendBearCont(void);
+   bool              FromOsciToTrendBearOpenLongCont(void);
+   bool              FromOsciToTrendBearOpenShortCont(void);
+   bool              FromOsciToTrendBearCloseLongCont(void);
+   bool              FromOsciToTrendBearCloseShortCont(void);
    bool              FromTrendBullToOsciCont(void);
+   bool              FromTrendBullToOsciOpenLongCont(void);
+   bool              FromTrendBullToOsciOpenShortCont(void);
+   bool              FromTrendBullToOsciCloseLongCont(void);
+   bool              FromTrendBullToOsciCloseShortCont(void);
    bool              FromTrendBearToOsciCont(void);
+   bool              FromTrendBearToOsciOpenLongCont(void);
+   bool              FromTrendBearToOsciOpenShortCont(void);
+   bool              FromTrendBearToOsciCloseLongCont(void);
+   bool              FromTrendBearToOsciCloseShortCont(void);
    
    void              RecordTickType(void);
    bool              IsBullArrange(void);
@@ -260,18 +375,15 @@ bool CAmaJmaExpert::Init(void)
 //| Expert deinitialization function                                 |
 //+------------------------------------------------------------------+
 void CAmaJmaExpert::Deinit(void) {
-//---
    IndicatorRelease(m_handle);
    IndicatorRelease(m_handle_ama);
    IndicatorRelease(m_handle_jma);
-//---   
 }
 //+------------------------------------------------------------------+
 //| Initialization of the indicators                                 |
 //+------------------------------------------------------------------+
 bool CAmaJmaExpert::InitIndicators(void)
   {
-//--- create MACD indicator
    if(m_handle==INVALID_HANDLE)
       if((m_handle=iCustom(NULL,0,INDICATOR_NAME,IPC,LengthJMA,PhaseJMA,AmaPeriod,FastMaPeriod,SlowMaPeriod,G,AMAShift,LengthJMASmooth,PhaseJMASmooth,DeviationPeriod))==INVALID_HANDLE)
         {
@@ -280,7 +392,6 @@ bool CAmaJmaExpert::InitIndicators(void)
         }
    m_handle_ama=iCustom(NULL,0,INDICATOR_NAME_AMA,IPC,AmaPeriod,FastMaPeriod,SlowMaPeriod,G,AMAShift);
    m_handle_jma=iCustom(NULL,0,INDICATOR_NAME_JMA,IPC,LengthJMA,PhaseJMA,0,0);
-//--- succeed
    return(true);
   }
 double CAmaJmaExpert::TradeSizeOptimized(void)
@@ -347,7 +458,53 @@ bool CAmaJmaExpert::InOscillation(void)
    return MathAbs(m_sslope_ama_prev)<AmaSlopeThreshold && MathAbs(m_sslope_ama_curr)<AmaSlopeThreshold;
   }
 
+bool CAmaJmaExpert::InOscillationOpenLong(void)
+  {
+   return InOscillation() && IsBearArrange() && m_sslope_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && 
+        (m_bideriv_jma_curr>=0 || m_bideriv_jma_curr+AmaSlopeThreshold*NearZeroRatio>0;
+  }
+
+bool CAmaJmaExpert::InOscillationOpenShort(void)
+  {
+   return InOscillation() && IsBullArrange() && m_sslope_ama_curr>0 && m_sslope_jma_curr>0 && m_bideriv_jma_prev>m_bideriv_jma_curr && 
+        (m_bideriv_jma_curr<=0 || m_bideriv_jma_curr<AmaSlopeThreshold*NearZeroRatio);
+  }
+
+bool CAmaJmaExpert::InOscillationCloseLong(void)
+  {
+   return InOscillation() && m_sslope_ama_curr>0 && m_sslope_ama_curr<AmaSlopeThreshold*GoldenSectionRatio && m_sslope_jma_curr>0 && m_sslope_jma_curr<AmaSlopeThreshold/GoldenSectionRatio && 
+        m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_jma_curr<=0 && m_bideriv_ama_prev>m_bideriv_ama_curr && m_bideriv_ama_curr<=0 &&
+        m_sslope_jma_prev>m_sslope_jma_curr && m_sslope_ama_prev>m_sslope_ama_curr;
+  }
+
+bool CAmaJmaExpert::InOscillationCloseShort(void)
+  {
+   return InOscillation() && m_sslope_ama_curr<0 && m_sslope_ama_curr>-AmaSlopeThreshold*GoldenSectionRatio && m_sslope_jma_curr<0 && m_sslope_jma_curr>-AmaSlopeThreshold/GoldenSectionRatio && 
+        m_bideriv_jma_prev<m_bideriv_jma_curr && m_bideriv_jma_curr>=0 && m_bideriv_ama_prev<m_bideriv_ama_curr && m_bideriv_ama_curr>=0 &&
+        m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_prev<m_sslope_ama_curr;
+  }
+
 bool CAmaJmaExpert::InTrendBull(void)
+  {
+   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+  }
+
+bool CAmaJmaExpert::InTrendBullOpenLong(void)
+  {
+   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+  }
+
+bool CAmaJmaExpert::InTrendBullOpenShort(void)
+  {
+   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+  }
+
+bool CAmaJmaExpert::InTrendBullCloseLong(void)
+  {
+   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+  }
+
+bool CAmaJmaExpert::InTrendBullCloseShort(void)
   {
    return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
   }
@@ -382,6 +539,15 @@ bool CAmaJmaExpert::InOscillationCont(void)
    for(int i=0; i<CONTINUOUS_TICK_NUM; i++)
     {
       if(m_tick_types[i]!=OSCILLATION) return false;
+    }
+    return true;
+  }
+
+bool CAmaJmaExpert::InOscillationCloseCont(void)
+  {
+   for(int i=0; i<CONTINUOUS_TICK_NUM; i++)
+    {
+      if(m_tick_types[i]!=OSCILLATION_CLOSE_LONG) return false;
     }
     return true;
   }
@@ -447,7 +613,8 @@ bool CAmaJmaExpert::FromTrendBearToOsciCont(void)
 void CAmaJmaExpert::RecordTickType(void)
   {
    m_tick_type_index=(m_tick_type_index+1)%CONTINUOUS_TICK_NUM;
-   if(InOscillation()) m_tick_types[m_tick_type_index]=OSCILLATION; 
+   if(InOscillationCloseLong()) m_tick_types[m_tick_type_index]=OSCILLATION_CLOSE_LONG; 
+   else if(InOscillation()) m_tick_types[m_tick_type_index]=OSCILLATION; 
    else if(InTrendBull()) m_tick_types[m_tick_type_index]=TREND_BULL; 
    else if(InTrendBear()) m_tick_types[m_tick_type_index]=TREND_BEAR; 
    else if(FromOsciToTrendBull()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL; 
@@ -482,10 +649,8 @@ bool CAmaJmaExpert::ShouldCloseLong(void)
    }
    else if(m_open_trade_type==OSCILLATION_TD)
    {
-     if(m_sslope_ama_curr>0 && m_sslope_jma_curr>0 && 
-        m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_jma_curr<=0 && m_bideriv_ama_prev>m_bideriv_ama_curr && m_bideriv_ama_curr<=0 &&
-        m_sslope_jma_prev>m_sslope_jma_curr && m_sslope_ama_prev>m_sslope_ama_curr)
-       { CurrTradeType=OSCILLATION_TD; return true; }
+     if(InOscillationCloseCont())
+       { CurrTradeType=OSCILLATION_CLOSE_TD; return true; }
      else
        return false;
    }
@@ -511,7 +676,7 @@ bool CAmaJmaExpert::ShouldCloseLong(void)
    if(InOscillationCont())
    {
      if(m_sslope_jma_curr<m_open_sslope_jma) return true;
-     if(IsBullArrange() && m_sslope_jma_curr>0 && m_bideriv_jma_prev>m_bideriv_jma_curr && (m_bideriv_jma_curr<=0 || MathAbs(m_bideriv_jma_curr)<AmaSlopeThreshold*0.05))
+     if(IsBullArrange() && m_sslope_jma_curr>0 && m_bideriv_jma_prev>m_bideriv_jma_curr && (m_bideriv_jma_curr<=0 || MathAbs(m_bideriv_jma_curr)<AmaSlopeThreshold*NearZeroRatio))
        return true;
      else
        return false;
@@ -541,7 +706,7 @@ bool CAmaJmaExpert::ShouldCloseShort(void)
    }
    else if(m_open_trade_type==OSCILLATION_TD)
    {
-     if(m_sslope_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || m_bideriv_jma_curr+AmaSlopeThreshold*0.05>0))
+     if(m_sslope_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || m_bideriv_jma_curr+AmaSlopeThreshold*NearZeroRatio>0))
        { CurrTradeType=OSCILLATION_TD; return true; }
      else
        return false;
@@ -568,7 +733,7 @@ bool CAmaJmaExpert::ShouldCloseShort(void)
    else if(InOscillationCont())
    {
      if(m_sslope_jma_curr>m_open_sslope_jma) return true;
-     if(IsBearArrange() && m_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || MathAbs(m_bideriv_jma_curr)<AmaSlopeThreshold*0.05))
+     if(IsBearArrange() && m_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || MathAbs(m_bideriv_jma_curr)<AmaSlopeThreshold*NearZeroRatio))
        return true;
      else
        return false;
@@ -581,36 +746,6 @@ bool CAmaJmaExpert::ShouldCloseShort(void)
        return false;
    }
    */
-  }
-
-bool CAmaJmaExpert::ShouldOpenShort(void)
-  {
-//   if(Bars(Symbol(),Period())<=m_close_bar_no || !IsReachedTickVolumeToOpen()) return false;
-   if(FromTrendBullToOsciCont())
-   {
-     if(IsBullArrange() && m_sslope_jma_curr<m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr) { CurrTradeType=BULL_TO_OSCI_TD; return true; }
-     else return false;
-   }
-   else if(FromOsciToTrendBearCont())
-   {
-     if(m_sslope_jma_curr<m_sslope_ama_curr) { CurrTradeType=OSCI_TO_BEAR_TD; return true; }
-     else return false;
-   }
-   else if(InOscillationCont())
-   {
-     if(IsBullArrange() && m_sslope_ama_curr>0 && m_sslope_jma_curr>0 && m_bideriv_jma_prev>m_bideriv_jma_curr && (m_bideriv_jma_curr<=0 || m_bideriv_jma_curr<AmaSlopeThreshold*0.05))
-       { CurrTradeType=OSCILLATION_TD; return true; }
-     else
-       return false;
-   } 
-   else if(InTrendBullCont())
-   {
-     if(IsBullArrange() && m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr)
-       { CurrTradeType=TREND_BULL_TD; return true; }
-     else
-       return false;
-   }
-   return false;
   }
 
 bool CAmaJmaExpert::ShouldOpenLong(void)
@@ -628,7 +763,7 @@ bool CAmaJmaExpert::ShouldOpenLong(void)
    }
    else if(InOscillationCont())
    {
-     if(IsBearArrange() && m_sslope_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || m_bideriv_jma_curr+AmaSlopeThreshold*0.05>0))
+     if(IsBearArrange() && m_sslope_ama_curr<0 && m_sslope_jma_curr<0 && m_bideriv_jma_prev<m_bideriv_jma_curr && (m_bideriv_jma_curr>=0 || m_bideriv_jma_curr+AmaSlopeThreshold*NearZeroRatio>0))
        { CurrTradeType=OSCILLATION_TD; return true; }
      else
        return false;
@@ -637,6 +772,36 @@ bool CAmaJmaExpert::ShouldOpenLong(void)
    {
      if(IsBearArrange() && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0 && m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr)
        { CurrTradeType=TREND_BEAR_TD; return true; }
+     else
+       return false;
+   }
+   return false;
+  }
+
+bool CAmaJmaExpert::ShouldOpenShort(void)
+  {
+//   if(Bars(Symbol(),Period())<=m_close_bar_no || !IsReachedTickVolumeToOpen()) return false;
+   if(FromTrendBullToOsciCont())
+   {
+     if(IsBullArrange() && m_sslope_jma_curr<m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr) { CurrTradeType=BULL_TO_OSCI_TD; return true; }
+     else return false;
+   }
+   else if(FromOsciToTrendBearCont())
+   {
+     if(m_sslope_jma_curr<m_sslope_ama_curr) { CurrTradeType=OSCI_TO_BEAR_TD; return true; }
+     else return false;
+   }
+   else if(InOscillationCont())
+   {
+     if(IsBullArrange() && m_sslope_ama_curr>0 && m_sslope_jma_curr>0 && m_bideriv_jma_prev>m_bideriv_jma_curr && (m_bideriv_jma_curr<=0 || m_bideriv_jma_curr<AmaSlopeThreshold*NearZeroRatio))
+       { CurrTradeType=OSCILLATION_TD; return true; }
+     else
+       return false;
+   } 
+   else if(InTrendBullCont())
+   {
+     if(IsBullArrange() && m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr)
+       { CurrTradeType=TREND_BULL_TD; return true; }
      else
        return false;
    }
