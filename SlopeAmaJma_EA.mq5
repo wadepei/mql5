@@ -491,27 +491,55 @@ bool CAmaJmaExpert::InTrendBull(void)
 
 bool CAmaJmaExpert::InTrendBullOpenLong(void)
   {
-   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+   return InTrendBull() && m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
+         m_sslope_ama_curr<AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
   }
 
 bool CAmaJmaExpert::InTrendBullOpenShort(void)
   {
-   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+   return InTrendBull() && IsBullArrange() && m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
+          m_sslope_ama_curr<AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
   }
 
 bool CAmaJmaExpert::InTrendBullCloseLong(void)
   {
-   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+   return InTrendBull() && m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
+          m_sslope_ama_curr<AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
   }
 
 bool CAmaJmaExpert::InTrendBullCloseShort(void)
   {
-   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
+   return InTrendBull() && m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
+         m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
   }
 
 bool CAmaJmaExpert::InTrendBear(void)
   {
    return m_sslope_ama_prev+AmaSlopeThreshold<0 && m_sslope_ama_curr+AmaSlopeThreshold<0;
+  }
+
+bool CAmaJmaExpert::InTrendBearOpenLong(void)
+  {
+   return InTrendBear() && IsBearArrange() && m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
+         m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
+  }
+
+bool CAmaJmaExpert::InTrendBearOpenShort(void)
+  {
+   return InTrendBear() && IsBearArrange() && m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
+          m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
+  }
+
+bool CAmaJmaExpert::InTrendBearCloseLong(void)
+  {
+   return InTrendBear() && m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
+          m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
+  }
+
+bool CAmaJmaExpert::InTrendBearCloseShort(void)
+  {
+   return InTrendBear() && m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
+         m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
   }
 
 bool CAmaJmaExpert::FromOsciToTrendBull(void)
