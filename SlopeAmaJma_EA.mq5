@@ -11,7 +11,7 @@
 #define INDICATOR_NAME "SlopeAmaJma_JMAed"
 #define INDICATOR_NAME_AMA "AMA"
 #define INDICATOR_NAME_JMA "Kositsin/JJMA"
-#define CONTINUOUS_TICK_NUM 12          // Continuous tick num for oscillation
+#define CONTINUOUS_TICK_NUM 10          // Continuous tick num for oscillation
 #define CONTINUOUS_TICK_NUM_TREND 4    // Continuous tick num for trend
 #define CONTINUOUS_TICK_NUM_CHANGE 2    // Continuous tick num for change state from osci to trend or vice versa
 //---
@@ -367,7 +367,7 @@ CAmaJmaExpert::CAmaJmaExpert(void) : m_handle(INVALID_HANDLE),
    ArrayResize(m_bideriv_jma, BufferCountToCopy);
    ArrayResize(m_tick_volume_ma, BufferCountToCopy);
    ArrayResize(m_tick_volume_dev, BufferCountToCopy);
-   ArrayResize(m_rates, 2);
+   ArrayResize(m_rates, BufferCountToCopy);
    
    for(int i=0; i<CONTINUOUS_TICK_NUM; i++)
     {
@@ -511,7 +511,7 @@ bool CAmaJmaExpert::InOscillationCloseLong(void)
 bool CAmaJmaExpert::InOscillationCloseLongLimit(void)
   {
    return !InOscillationCloseShort() && InOscillation() && m_sslope_ama_curr<AmaSlopeThreshold*GoldenSectionRatio && m_sslope_jma_curr<AmaSlopeThreshold/GoldenSectionRatio && 
-        (IsBullArrange() || m_price_curr-m_ama_curr>=m_open_ama-m_open_price && m_open_ama-m_open_price>0) && m_bideriv_jma_prev>m_bideriv_jma_curr;
+        (IsBullArrange() || m_price_curr-m_ama_curr>=m_open_ama-m_open_price && m_open_price<m_price_curr) &&/* m_bideriv_jma_prev>m_bideriv_jma_curr*/m_bideriv_jma_curr<0;
   }
 
 bool CAmaJmaExpert::InOscillationCloseShort(void)
@@ -523,7 +523,7 @@ bool CAmaJmaExpert::InOscillationCloseShort(void)
 bool CAmaJmaExpert::InOscillationCloseShortLimit(void)
   {
    return !InOscillationCloseLong() && InOscillation() && m_sslope_ama_curr>-AmaSlopeThreshold*GoldenSectionRatio && m_sslope_jma_curr>-AmaSlopeThreshold/GoldenSectionRatio && 
-        (IsBearArrange() || m_ama_curr-m_price_curr>=m_open_price-m_open_ama && m_open_price-m_open_ama>0) && m_bideriv_jma_prev<m_bideriv_jma_curr;
+        (IsBearArrange() || m_ama_curr-m_price_curr>=m_open_price-m_open_ama && m_open_price>m_price_curr) &&/* m_bideriv_jma_prev<m_bideriv_jma_curr*/m_bideriv_jma_curr>0;
   }
 
 bool CAmaJmaExpert::InBull(void)
@@ -626,8 +626,12 @@ bool CAmaJmaExpert::FromOsciToBearOpenLong(void)
 
 bool CAmaJmaExpert::FromOsciToBearOpenShort(void)
   {
-   return m_bideriv_jma_curr<0 && m_sslope_jma_prev>m_sslope_jma_curr &&
-          /*m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio && */m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
+   if(m_bideriv_jma_curr<0 && m_sslope_jma_prev>m_sslope_jma_curr)
+   {
+      1+1;
+   }
+   return m_bideriv_jma_curr<0 && m_sslope_jma_prev>m_sslope_jma_curr/* &&
+          m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr*/;
   }
 
 bool CAmaJmaExpert::FromOsciToBearCloseLong(void)
@@ -992,7 +996,7 @@ void CAmaJmaExpert::RecordTickType(void)
    
    else if(!m_has_opened_position && FromOsciToBear() && FromOsciToBearOpenLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_LONG; 
    else if(!m_has_opened_position && InBear() && FromOsciToBearOpenLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_LONG2; 
-   else if(!m_has_opened_position && FromOsciToBear() && FromOsciToBearOpenShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_SHORT; 
+   else if(!m_has_opened_position && FromOsciToBear() && FromOsciToBearOpenShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_SHORT;
    else if(!m_has_opened_position && InBear() && FromOsciToBearOpenShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_SHORT2; 
    else if(m_has_opened_position && FromOsciToBear() && FromOsciToBearCloseLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_CLOSE_LONG; 
    else if(m_has_opened_position && InBear() && FromOsciToBearCloseLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_CLOSE_LONG2; 
@@ -1073,7 +1077,6 @@ bool CAmaJmaExpert::ShouldCloseLong(void)
      if(FromBearToOsciCloseLongCont()) { CurrTradeType=BEAR_TO_OSCI_CLOSE_LONG_TD; return true; }
      if(InOscillationCloseLongCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_TD; return true; }
      if(InOscillationCloseLongLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_LIMIT_TD; return true; }
-//     if(FromOsciToBearCloseLongCont()) { CurrTradeType=OSCI_TO_BEAR_CLOSE_LONG_TD; return true; }
      if(FromOsciToBullCloseLongCont()) { CurrTradeType=OSCI_TO_BULL_CLOSE_LONG_TD; return true; }
      if(InBullCloseLongCont()) { CurrTradeType=BULL_CLOSE_LONG_TD; return true; }
    }
@@ -1344,7 +1347,7 @@ bool CAmaJmaExpert::Processing(void)
      m_is_first_tick=false;
      return false;
    }
-   if(CopyRates(Symbol(),Period(),0,2,m_rates)!=2)
+   if(CopyRates(Symbol(),Period(),0,BufferCountToCopy,m_rates)!=BufferCountToCopy)
      {
       Print("CopyRates of ",Symbol()," failed, no history");
       return false;
