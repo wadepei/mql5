@@ -78,42 +78,6 @@ enum Tick_type //Type of Tick
   BEAR_OPEN_SHORT,   
   BEAR_CLOSE_LONG,   
   BEAR_CLOSE_SHORT,   
-  OSCI_TO_BULL,        
-  OSCI_TO_BULL_OPEN_LONG,        
-  OSCI_TO_BULL_OPEN_LONG2,        
-  OSCI_TO_BULL_OPEN_SHORT,        
-  OSCI_TO_BULL_OPEN_SHORT2,        
-  OSCI_TO_BULL_CLOSE_LONG,        
-  OSCI_TO_BULL_CLOSE_LONG2,        
-  OSCI_TO_BULL_CLOSE_SHORT,        
-  OSCI_TO_BULL_CLOSE_SHORT2,        
-  OSCI_TO_BEAR,        
-  OSCI_TO_BEAR_OPEN_LONG,        
-  OSCI_TO_BEAR_OPEN_LONG2,        
-  OSCI_TO_BEAR_OPEN_SHORT,        
-  OSCI_TO_BEAR_OPEN_SHORT2,        
-  OSCI_TO_BEAR_CLOSE_LONG,        
-  OSCI_TO_BEAR_CLOSE_LONG2,        
-  OSCI_TO_BEAR_CLOSE_SHORT,        
-  OSCI_TO_BEAR_CLOSE_SHORT2,        
-  BULL_TO_OSCI,     
-  BULL_TO_OSCI_OPEN_LONG,     
-  BULL_TO_OSCI_OPEN_LONG2,     
-  BULL_TO_OSCI_OPEN_SHORT,     
-  BULL_TO_OSCI_OPEN_SHORT2,     
-  BULL_TO_OSCI_CLOSE_LONG,     
-  BULL_TO_OSCI_CLOSE_LONG2,     
-  BULL_TO_OSCI_CLOSE_SHORT,     
-  BULL_TO_OSCI_CLOSE_SHORT2,     
-  BEAR_TO_OSCI,
-  BEAR_TO_OSCI_OPEN_LONG,
-  BEAR_TO_OSCI_OPEN_LONG2,
-  BEAR_TO_OSCI_OPEN_SHORT,
-  BEAR_TO_OSCI_OPEN_SHORT2,
-  BEAR_TO_OSCI_CLOSE_LONG,
-  BEAR_TO_OSCI_CLOSE_LONG2,
-  BEAR_TO_OSCI_CLOSE_SHORT,
-  BEAR_TO_OSCI_CLOSE_SHORT2
  };
 enum Trade_type //Type of trade
  {
@@ -135,26 +99,6 @@ enum Trade_type //Type of trade
   BEAR_OPEN_SHORT_TD,   
   BEAR_CLOSE_LONG_TD,   
   BEAR_CLOSE_SHORT_TD,   
-  OSCI_TO_BULL_TD,        
-  OSCI_TO_BULL_OPEN_LONG_TD,        
-  OSCI_TO_BULL_OPEN_SHORT_TD,        
-  OSCI_TO_BULL_CLOSE_LONG_TD,        
-  OSCI_TO_BULL_CLOSE_SHORT_TD,        
-  OSCI_TO_BEAR_TD,        
-  OSCI_TO_BEAR_OPEN_LONG_TD,        
-  OSCI_TO_BEAR_OPEN_SHORT_TD,        
-  OSCI_TO_BEAR_CLOSE_LONG_TD,        
-  OSCI_TO_BEAR_CLOSE_SHORT_TD,        
-  BULL_TO_OSCI_TD,     
-  BULL_TO_OSCI_OPEN_LONG_TD,     
-  BULL_TO_OSCI_OPEN_SHORT_TD,     
-  BULL_TO_OSCI_CLOSE_LONG_TD,     
-  BULL_TO_OSCI_CLOSE_SHORT_TD,     
-  BEAR_TO_OSCI_TD,
-  BEAR_TO_OSCI_OPEN_LONG_TD,
-  BEAR_TO_OSCI_OPEN_SHORT_TD,
-  BEAR_TO_OSCI_CLOSE_LONG_TD,
-  BEAR_TO_OSCI_CLOSE_SHORT_TD
  };
 Trade_type CurrTradeType=EMPTY_TD;
 
@@ -259,26 +203,6 @@ protected:
    bool              InBearOpenShort(void);
    bool              InBearCloseLong(void);
    bool              InBearCloseShort(void);
-   bool              FromOsciToBull(void);
-   bool              FromOsciToBullOpenLong(void);
-   bool              FromOsciToBullOpenShort(void);
-   bool              FromOsciToBullCloseLong(void);
-   bool              FromOsciToBullCloseShort(void);
-   bool              FromOsciToBear(void);
-   bool              FromOsciToBearOpenLong(void);
-   bool              FromOsciToBearOpenShort(void);
-   bool              FromOsciToBearCloseLong(void);
-   bool              FromOsciToBearCloseShort(void);
-   bool              FromBullToOsci(void);
-   bool              FromBullToOsciOpenLong(void);
-   bool              FromBullToOsciOpenShort(void);
-   bool              FromBullToOsciCloseLong(void);
-   bool              FromBullToOsciCloseShort(void);
-   bool              FromBearToOsci(void);
-   bool              FromBearToOsciOpenLong(void);
-   bool              FromBearToOsciOpenShort(void);
-   bool              FromBearToOsciCloseLong(void);
-   bool              FromBearToOsciCloseShort(void);
    //--- the following seven methods are the above methods in continuously
    bool              InOscillationCont(void);
    bool              InOscillationOpenLongCont(void);
@@ -297,26 +221,6 @@ protected:
    bool              InBearOpenShortCont(void);
    bool              InBearCloseLongCont(void);
    bool              InBearCloseShortCont(void);
-   bool              FromOsciToBullCont(void);
-   bool              FromOsciToBullOpenLongCont(void);
-   bool              FromOsciToBullOpenShortCont(void);
-   bool              FromOsciToBullCloseLongCont(void);
-   bool              FromOsciToBullCloseShortCont(void);
-   bool              FromOsciToBearCont(void);
-   bool              FromOsciToBearOpenLongCont(void);
-   bool              FromOsciToBearOpenShortCont(void);
-   bool              FromOsciToBearCloseLongCont(void);
-   bool              FromOsciToBearCloseShortCont(void);
-   bool              FromBullToOsciCont(void);
-   bool              FromBullToOsciOpenLongCont(void);
-   bool              FromBullToOsciOpenShortCont(void);
-   bool              FromBullToOsciCloseLongCont(void);
-   bool              FromBullToOsciCloseShortCont(void);
-   bool              FromBearToOsciCont(void);
-   bool              FromBearToOsciOpenLongCont(void);
-   bool              FromBearToOsciOpenShortCont(void);
-   bool              FromBearToOsciCloseLongCont(void);
-   bool              FromBearToOsciCloseShortCont(void);
    
    void              RecordTickType(void);
    bool              IsBullArrange(void);
@@ -511,7 +415,7 @@ bool CAmaJmaExpert::InOscillationCloseLong(void)
 bool CAmaJmaExpert::InOscillationCloseLongLimit(void)
   {
    return !InOscillationCloseShort() && InOscillation() && m_sslope_ama_curr<AmaSlopeThreshold*GoldenSectionRatio && m_sslope_jma_curr<AmaSlopeThreshold/GoldenSectionRatio && 
-        (IsBullArrange() || m_price_curr-m_ama_curr>=m_open_ama-m_open_price && m_open_price<m_price_curr) &&/* m_bideriv_jma_prev>m_bideriv_jma_curr*/m_bideriv_jma_curr<0;
+        (IsBullArrange() || m_price_curr-m_ama_curr>=m_open_ama-m_open_price) && m_open_price<m_price_curr &&/* m_bideriv_jma_prev>m_bideriv_jma_curr*/m_bideriv_jma_curr<0;
   }
 
 bool CAmaJmaExpert::InOscillationCloseShort(void)
@@ -523,7 +427,7 @@ bool CAmaJmaExpert::InOscillationCloseShort(void)
 bool CAmaJmaExpert::InOscillationCloseShortLimit(void)
   {
    return !InOscillationCloseLong() && InOscillation() && m_sslope_ama_curr>-AmaSlopeThreshold*GoldenSectionRatio && m_sslope_jma_curr>-AmaSlopeThreshold/GoldenSectionRatio && 
-        (IsBearArrange() || m_ama_curr-m_price_curr>=m_open_price-m_open_ama && m_open_price>m_price_curr) &&/* m_bideriv_jma_prev<m_bideriv_jma_curr*/m_bideriv_jma_curr>0;
+        (IsBearArrange() || m_ama_curr-m_price_curr>=m_open_price-m_open_ama) && m_open_price>m_price_curr &&/* m_bideriv_jma_prev<m_bideriv_jma_curr*/m_bideriv_jma_curr>0;
   }
 
 bool CAmaJmaExpert::InBull(void)
@@ -582,125 +486,6 @@ bool CAmaJmaExpert::InBearCloseShort(void)
   {
    return InBear()/* && m_jma_prev<m_jma_curr && IsBearArrange() && m_sslope_ama_prev<m_sslope_ama_curr*/ && m_sslope_jma_prev<m_sslope_jma_curr/* && (m_sslope_ama_curr<m_sslope_jma_curr||m_bideriv_jma_curr>AmaSlopeThreshold) &&
          /*m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio*/ && m_bideriv_jma_curr>0 && m_bideriv_jma_prev<m_bideriv_jma_curr;
-  }
-
-bool CAmaJmaExpert::FromOsciToBull(void)
-  {
-   return m_sslope_ama_prev<AmaSlopeThreshold && m_sslope_ama_curr>AmaSlopeThreshold;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullOpenLong(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0 &&
-         m_sslope_ama_curr<AmaSlopeThreshold/GoldenSectionRatio;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullOpenShort(void)
-  {
-   return m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
-          m_sslope_ama_curr<AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullCloseLong(void)
-  {
-   return m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
-          m_sslope_ama_curr<AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullCloseShort(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
-         m_sslope_ama_curr<AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
-  }
-
-bool CAmaJmaExpert::FromOsciToBear(void)
-  {
-   return m_sslope_ama_prev+AmaSlopeThreshold>0 && m_sslope_ama_curr+AmaSlopeThreshold<0;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearOpenLong(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0 &&
-         m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearOpenShort(void)
-  {
-   if(m_bideriv_jma_curr<0 && m_sslope_jma_prev>m_sslope_jma_curr)
-   {
-      1+1;
-   }
-   return m_bideriv_jma_curr<0 && m_sslope_jma_prev>m_sslope_jma_curr/* &&
-          m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr*/;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearCloseLong(void)
-  {
-   return m_bideriv_jma_curr<0 && m_sslope_jma_prev>m_sslope_jma_curr &&
-          m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearCloseShort(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
-         m_sslope_ama_curr>-AmaSlopeThreshold/GoldenSectionRatio && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
-  }
-
-bool CAmaJmaExpert::FromBullToOsci(void)
-  {
-   return m_sslope_ama_prev>AmaSlopeThreshold && m_sslope_ama_curr<AmaSlopeThreshold;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciOpenLong(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0 &&
-         m_sslope_ama_curr<AmaSlopeThreshold*GoldenSectionRatio;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciOpenShort(void)
-  {
-   return m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
-          m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciCloseLong(void)
-  {
-   return m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
-          m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciCloseShort(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
-         m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
-  }
-
-bool CAmaJmaExpert::FromBearToOsci(void)
-  {
-   return m_sslope_ama_prev+AmaSlopeThreshold<0 && m_sslope_ama_curr+AmaSlopeThreshold>0;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciOpenLong(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr && m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciOpenShort(void)
-  {
-   return m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
-          m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciCloseLong(void)
-  {
-   return m_bideriv_ama_curr<0 && m_bideriv_jma_curr<0 && m_sslope_ama_prev>m_sslope_ama_curr && m_sslope_jma_prev>m_sslope_jma_curr &&
-          m_bideriv_jma_prev>m_bideriv_jma_curr && m_bideriv_ama_prev>m_bideriv_ama_curr;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciCloseShort(void)
-  {
-   return m_sslope_ama_prev<m_sslope_ama_curr && m_sslope_jma_prev<m_sslope_jma_curr && m_sslope_ama_curr<m_sslope_jma_curr &&
-         m_bideriv_ama_curr>0 && m_bideriv_jma_curr>0;
   }
 
 bool CAmaJmaExpert::InOscillationCont(void)
@@ -805,166 +590,6 @@ bool CAmaJmaExpert::InBearCloseShortCont(void)
    return true;
   }
 
-bool CAmaJmaExpert::FromOsciToBullCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BULL) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullOpenLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_OPEN_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_OPEN_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullOpenShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_OPEN_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_OPEN_SHORT2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullCloseLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_CLOSE_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_CLOSE_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBullCloseShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_CLOSE_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BULL_CLOSE_SHORT2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BEAR) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearOpenLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_OPEN_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_OPEN_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearOpenShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_OPEN_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_OPEN_SHORT2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearCloseLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_CLOSE_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_CLOSE_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromOsciToBearCloseShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_CLOSE_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCI_TO_BEAR_CLOSE_SHORT2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCILLATION) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciOpenLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_OPEN_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_OPEN_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciOpenShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_OPEN_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_OPEN_SHORT2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciCloseLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_CLOSE_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_CLOSE_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBullToOsciCloseShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_CLOSE_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BULL_TO_OSCI_CLOSE_SHORT2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=OSCILLATION) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciOpenLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_OPEN_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_OPEN_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciOpenShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_OPEN_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_OPEN_SHORT2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciCloseLongCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_CLOSE_LONG) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_CLOSE_LONG2) return false; }
-   return true;
-  }
-
-bool CAmaJmaExpert::FromBearToOsciCloseShortCont(void)
-  {
-   int startIndex = CONTINUOUS_TICK_NUM - CONTINUOUS_TICK_NUM_CHANGE + 1 + m_tick_type_index;
-   if(m_tick_types[startIndex%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_CLOSE_SHORT) return false;
-   for(int i=1; i<CONTINUOUS_TICK_NUM_CHANGE; i++) { if(m_tick_types[(i+startIndex)%CONTINUOUS_TICK_NUM]!=BEAR_TO_OSCI_CLOSE_SHORT2) return false; }
-   return true;
-  }
-
 void CAmaJmaExpert::RecordTickType(void)
   {
    m_tick_type_index=(m_tick_type_index+1)%CONTINUOUS_TICK_NUM;
@@ -984,50 +609,10 @@ void CAmaJmaExpert::RecordTickType(void)
    else if(!m_has_opened_position && InBearOpenShort()) m_tick_types[m_tick_type_index]=BEAR_OPEN_SHORT; 
    else if(m_has_opened_position && InBearCloseLong()) m_tick_types[m_tick_type_index]=BEAR_CLOSE_LONG; 
    else if(m_has_opened_position && InBearCloseShort()) m_tick_types[m_tick_type_index]=BEAR_CLOSE_SHORT; 
-   
-   else if(!m_has_opened_position && FromOsciToBull() && FromOsciToBullOpenLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_OPEN_LONG; 
-   else if(!m_has_opened_position && InBull() && FromOsciToBullOpenLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_OPEN_LONG2; 
-   else if(!m_has_opened_position && FromOsciToBull() && FromOsciToBullOpenShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_OPEN_SHORT; 
-   else if(!m_has_opened_position && InBull() && FromOsciToBullOpenShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_OPEN_SHORT2; 
-   else if(m_has_opened_position && FromOsciToBull() && FromOsciToBullCloseLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_CLOSE_LONG; 
-   else if(m_has_opened_position && InBull() && FromOsciToBullCloseLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_CLOSE_LONG2; 
-   else if(m_has_opened_position && FromOsciToBull() && FromOsciToBullCloseShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_CLOSE_SHORT; 
-   else if(m_has_opened_position && InBull() && FromOsciToBullCloseShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL_CLOSE_SHORT2; 
-   
-   else if(!m_has_opened_position && FromOsciToBear() && FromOsciToBearOpenLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_LONG; 
-   else if(!m_has_opened_position && InBear() && FromOsciToBearOpenLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_LONG2; 
-   else if(!m_has_opened_position && FromOsciToBear() && FromOsciToBearOpenShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_SHORT;
-   else if(!m_has_opened_position && InBear() && FromOsciToBearOpenShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_OPEN_SHORT2; 
-   else if(m_has_opened_position && FromOsciToBear() && FromOsciToBearCloseLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_CLOSE_LONG; 
-   else if(m_has_opened_position && InBear() && FromOsciToBearCloseLong()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_CLOSE_LONG2; 
-   else if(m_has_opened_position && FromOsciToBear() && FromOsciToBearCloseShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_CLOSE_SHORT; 
-   else if(m_has_opened_position && InBear() && FromOsciToBearCloseShort()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR_CLOSE_SHORT2; 
-   
-   else if(!m_has_opened_position && FromBullToOsci() && FromBullToOsciOpenLong()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_OPEN_LONG; 
-   else if(!m_has_opened_position && InOscillation() && FromBullToOsciOpenLong()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_OPEN_LONG2; 
-   else if(!m_has_opened_position && FromBullToOsci() && FromBullToOsciOpenShort()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_OPEN_SHORT; 
-   else if(!m_has_opened_position && InOscillation() && FromBullToOsciOpenShort()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_OPEN_SHORT2; 
-   else if(m_has_opened_position && FromBullToOsci() && FromBullToOsciCloseLong()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_CLOSE_LONG; 
-   else if(m_has_opened_position && InOscillation() && FromBullToOsciCloseLong()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_CLOSE_LONG2; 
-   else if(m_has_opened_position && FromBullToOsci() && FromBullToOsciCloseShort()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_CLOSE_SHORT; 
-   else if(m_has_opened_position && InOscillation() && FromBullToOsciCloseShort()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI_CLOSE_SHORT2; 
-   
-   else if(!m_has_opened_position && FromBearToOsci() && FromBearToOsciOpenLong()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_OPEN_LONG; 
-   else if(!m_has_opened_position && InOscillation() && FromBearToOsciOpenLong()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_OPEN_LONG2; 
-   else if(!m_has_opened_position && FromBearToOsci() && FromBearToOsciOpenShort()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_OPEN_SHORT; 
-   else if(!m_has_opened_position && InOscillation() && FromBearToOsciOpenShort()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_OPEN_SHORT2; 
-   else if(m_has_opened_position && FromBearToOsci() && FromBearToOsciCloseLong()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_CLOSE_LONG; 
-   else if(m_has_opened_position && InOscillation() && FromBearToOsciCloseLong()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_CLOSE_LONG2; 
-   else if(m_has_opened_position && FromBearToOsci() && FromBearToOsciCloseShort()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_CLOSE_SHORT; 
-   else if(m_has_opened_position && InOscillation() && FromBearToOsciCloseShort()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI_CLOSE_SHORT2; 
-   
+
    else if(InOscillation()) m_tick_types[m_tick_type_index]=OSCILLATION; 
    else if(InBull()) m_tick_types[m_tick_type_index]=BULL; 
    else if(InBear()) m_tick_types[m_tick_type_index]=BEAR; 
-   else if(FromOsciToBull()) m_tick_types[m_tick_type_index]=OSCI_TO_BULL; 
-   else if(FromOsciToBear()) m_tick_types[m_tick_type_index]=OSCI_TO_BEAR; 
-   else if(FromBullToOsci()) m_tick_types[m_tick_type_index]=BULL_TO_OSCI; 
-   else if(FromBearToOsci()) m_tick_types[m_tick_type_index]=BEAR_TO_OSCI; 
    else m_tick_types[m_tick_type_index]=EMPTY; 
   }
 
@@ -1046,38 +631,18 @@ bool CAmaJmaExpert::IsBullArrange(void)
 bool CAmaJmaExpert::ShouldCloseLong(void)
   {
 //   if(m_rates[0].tick_volume-m_open_tick_no<MiTickNoBetweenTrade) return false;
-   if(m_open_trade_type==BEAR_TO_OSCI_OPEN_LONG_TD)
+   if(m_open_trade_type==OSCILLATION_OPEN_LONG_TD)
    {
      if(InBearCloseLongCont()) { CurrTradeType=BEAR_CLOSE_LONG_TD; return true; }
-     if(FromBearToOsciCloseLongCont()) { CurrTradeType=BEAR_TO_OSCI_CLOSE_LONG_TD; return true; }
-     if(InOscillationCloseLongCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_TD; return true; }
+//     if(InOscillationCloseLongCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_TD; return true; }
      if(InOscillationCloseLongLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_LIMIT_TD; return true; }
-     if(FromOsciToBullCloseLongCont()) { CurrTradeType=OSCI_TO_BULL_CLOSE_LONG_TD; return true; }
-     if(InBullCloseLongCont()) { CurrTradeType=BULL_CLOSE_LONG_TD; return true; }
-   }
-   else if(m_open_trade_type==OSCI_TO_BULL_OPEN_LONG_TD)
-   {
-     if(InOscillationCloseLongCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_TD; return true; }
-     if(InOscillationCloseLongLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_LIMIT_TD; return true; }
-     if(FromOsciToBullCloseLongCont()) { CurrTradeType=OSCI_TO_BULL_CLOSE_LONG_TD; return true; }
-     if(InBullCloseLongCont()) { CurrTradeType=BULL_CLOSE_LONG_TD; return true; }
-   }
-   else if(m_open_trade_type==OSCILLATION_OPEN_LONG_TD)
-   {
-     if(InBearCloseLongCont()) { CurrTradeType=BEAR_CLOSE_LONG_TD; return true; }
-     if(InOscillationCloseLongCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_TD; return true; }
-     if(InOscillationCloseLongLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_LIMIT_TD; return true; }
-     if(FromOsciToBearCloseLongCont() || FromOsciToBearOpenShortCont()) { CurrTradeType=OSCI_TO_BEAR_CLOSE_LONG_TD; return true; }
-     if(FromOsciToBullCloseLongCont()) { CurrTradeType=OSCI_TO_BULL_CLOSE_LONG_TD; return true; }
      if(InBullCloseLongCont()) { CurrTradeType=BULL_CLOSE_LONG_TD; return true; }
    }
    else if(m_open_trade_type==BEAR_OPEN_LONG_TD)
    {
      if(InBearCloseLongCont()) { CurrTradeType=BEAR_CLOSE_LONG_TD; return true; }
-     if(FromBearToOsciCloseLongCont()) { CurrTradeType=BEAR_TO_OSCI_CLOSE_LONG_TD; return true; }
      if(InOscillationCloseLongCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_TD; return true; }
      if(InOscillationCloseLongLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_LONG_LIMIT_TD; return true; }
-     if(FromOsciToBullCloseLongCont()) { CurrTradeType=OSCI_TO_BULL_CLOSE_LONG_TD; return true; }
      if(InBullCloseLongCont()) { CurrTradeType=BULL_CLOSE_LONG_TD; return true; }
    }
    return false;
@@ -1086,37 +651,18 @@ bool CAmaJmaExpert::ShouldCloseLong(void)
 bool CAmaJmaExpert::ShouldCloseShort(void)
   {
 //   if(m_rates[0].tick_volume-m_open_tick_no<MiTickNoBetweenTrade) return false;
-   if(m_open_trade_type==BULL_TO_OSCI_OPEN_SHORT_TD)
+   if(m_open_trade_type==OSCILLATION_OPEN_SHORT_TD)
    {
      if(InBullCloseShortCont()) { CurrTradeType=BULL_CLOSE_SHORT_TD; return true; }
-     if(FromBullToOsciCloseShortCont()) { CurrTradeType=BULL_TO_OSCI_CLOSE_SHORT_TD; return true; }
-     if(InOscillationCloseShortCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_TD; return true; }
+//     if(InOscillationCloseShortCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_TD; return true; }
      if(InOscillationCloseShortLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_LIMIT_TD; return true; }
-     if(FromOsciToBearCloseShortCont()) { CurrTradeType=OSCI_TO_BEAR_CLOSE_SHORT_TD; return true; }
-     if(InBearCloseShortCont()) { CurrTradeType=BEAR_CLOSE_SHORT_TD; return true; }
-   }
-   else if(m_open_trade_type==OSCI_TO_BEAR_OPEN_SHORT_TD)
-   {
-     if(InOscillationCloseShortCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_TD; return true; }
-     if(InOscillationCloseShortLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_LIMIT_TD; return true; }
-     if(FromOsciToBearCloseShortCont()) { CurrTradeType=OSCI_TO_BEAR_CLOSE_SHORT_TD; return true; }
-     if(InBearCloseShortCont()) { CurrTradeType=BEAR_CLOSE_SHORT_TD; return true; }
-   }
-   else if(m_open_trade_type==OSCILLATION_OPEN_SHORT_TD)
-   {
-     if(InBullCloseShortCont()) { CurrTradeType=BULL_CLOSE_SHORT_TD; return true; }
-     if(InOscillationCloseShortCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_TD; return true; }
-     if(InOscillationCloseShortLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_LIMIT_TD; return true; }
-     if(FromOsciToBearCloseShortCont()) { CurrTradeType=OSCI_TO_BEAR_CLOSE_SHORT_TD; return true; }
      if(InBearCloseShortCont()) { CurrTradeType=BEAR_CLOSE_SHORT_TD; return true; }
    } 
    else if(m_open_trade_type==BULL_OPEN_SHORT_TD)
    {
      if(InBullCloseShortCont()) { CurrTradeType=BULL_CLOSE_SHORT_TD; return true; }
-     if(FromBullToOsciCloseShortCont()) { CurrTradeType=BULL_TO_OSCI_CLOSE_SHORT_TD; return true; }
      if(InOscillationCloseShortCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_TD; return true; }
      if(InOscillationCloseShortLimitCont()) { CurrTradeType=OSCILLATION_CLOSE_SHORT_LIMIT_TD; return true; }
-     if(FromOsciToBearCloseShortCont()) { CurrTradeType=OSCI_TO_BEAR_CLOSE_SHORT_TD; return true; }
      if(InBearCloseShortCont()) { CurrTradeType=BEAR_CLOSE_SHORT_TD; return true; }
    }
    return false;
@@ -1125,17 +671,7 @@ bool CAmaJmaExpert::ShouldCloseShort(void)
 bool CAmaJmaExpert::ShouldOpenLong(void)
   {
 //   if(Bars(Symbol(),Period())<=m_close_bar_no || !IsReachedTickVolumeToOpen()) return false;
-   if(FromBearToOsciOpenLongCont() || FromBearToOsciCloseShortCont())
-   {
-     CurrTradeType=BEAR_TO_OSCI_OPEN_LONG_TD; 
-     return true; 
-   }
-   else if(FromOsciToBullOpenLongCont() || FromOsciToBullCloseShortCont())
-   {
-     CurrTradeType=OSCI_TO_BULL_OPEN_LONG_TD; 
-     return true; 
-   }
-   else if(InOscillationOpenLongCont() || InOscillationCloseShortCont() || InOscillationCloseShortLimitCont())
+   if(InOscillationOpenLongCont() || InOscillationCloseShortCont() || InOscillationCloseShortLimitCont())
    {
      CurrTradeType=OSCILLATION_OPEN_LONG_TD; 
      return true; 
@@ -1151,17 +687,7 @@ bool CAmaJmaExpert::ShouldOpenLong(void)
 bool CAmaJmaExpert::ShouldOpenShort(void)
   {
 //   if(Bars(Symbol(),Period())<=m_close_bar_no || !IsReachedTickVolumeToOpen()) return false;
-   if(FromBullToOsciOpenShortCont() || FromBullToOsciCloseLongCont())
-   {
-     CurrTradeType=BULL_TO_OSCI_OPEN_SHORT_TD; 
-     return true; 
-   }
-   else if(FromOsciToBearOpenShortCont() || FromOsciToBearCloseLongCont())
-   {
-     CurrTradeType=OSCI_TO_BEAR_OPEN_SHORT_TD; 
-     return true; 
-   }
-   else if(InOscillationOpenShortCont() || InOscillationCloseLongCont() || InOscillationCloseLongLimitCont())
+   if(InOscillationOpenShortCont() || InOscillationCloseLongCont() || InOscillationCloseLongLimitCont())
    {
      CurrTradeType=OSCILLATION_OPEN_SHORT_TD; 
      return true; 
